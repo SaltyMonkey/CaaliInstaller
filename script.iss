@@ -96,4 +96,6 @@ Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\{#Nodex86Name}"" /
 Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: " https://discord.gg/maqBmJV"
 
 [UninstallDelete]
-Type: files; Name: "{app}\{#MyAppName}.url"
+Type: filesandordirs; Name: "{app}\bin\*"
+Type: filesandordirs; Name: "{app}\bin\node_modules\*"
+Type: filesandordirs; Name: "{app}\*"
