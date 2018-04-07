@@ -3,8 +3,7 @@
 #define MyAppPublisher "SaltyMonkey"
 #define MyAppURL "https://discord.gg/maqBmJV"
 #define MyAppExeName "TeraProxy.bat"
-#define Nodex64Name  "node-v9.11.1-x64.msi"
-#define Nodex86Name  "node-v9.11.1-x86.msi"
+#include <idp.iss>
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -36,6 +35,9 @@ ShowLanguageDialog=no
 DisableStartupPrompt=False
 UsePreviousSetupType=False
 UsePreviousAppDir=False
+AlwaysShowGroupOnReadyPage=True
+AlwaysShowDirOnReadyPage=True
+InfoBeforeFile=D:\CaaliProxyInstaller\topack\readme.txt
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -69,17 +71,17 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
+Name: "openfolder"; Description: "Open TeraProxy folder after installation"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "D:\CaaliProxyInstaller\topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\CaaliProxyInstaller\topack\proxy\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\CaaliProxyInstaller\topack\proxy\README.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\CaaliProxyInstaller\topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\CaaliProxyInstaller\topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\CaaliProxyInstaller\topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\CaaliProxyInstaller\topack\proxy\bin\node_modules\*"; DestDir: "{app}\bin\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\CaaliProxyInstaller\topack\{#Nodex64Name}"; DestDir: "{tmp}"; Flags: deleteafterinstall; Check: Is64BitInstallMode
-Source: "D:\CaaliProxyInstaller\topack\{#Nodex86Name}"; DestDir: "{tmp}"; Flags: deleteafterinstall; Check: not Is64BitInstallMode
+Source: "topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
+Source: "topack\proxy\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
+Source: "topack\proxy\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
+Source: "topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
+Source: "topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
+Source: "topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
+Source: "topack\proxy\bin\node_modules\*"; DestDir: "{app}\bin\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
+
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -89,13 +91,39 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\{#Nodex64Name}"" /qn /norestart /passive"; Flags: 64bit skipifdoesntexist waituntilterminated; Check:IsWin64; StatusMsg: "Install NodeJs"; 
-Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\{#Nodex86Name}"" /qn /norestart /passive"; Flags: 32bit skipifdoesntexist waituntilterminated; StatusMsg: "Install NodeJs"; 
+Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; Components: NodeJS; StatusMsg: "Install NodeJs binary"; 
+Filename: "explorer.exe"; Parameters:"{app}";  Tasks: openfolder
 
 [INI]
 Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: " https://discord.gg/maqBmJV"
 
 [UninstallDelete]
+Type: files; Name: "{app}\{#MyAppName}.url"
+Type: filesandordirs; Name: "{app}\node_modules\*"
 Type: filesandordirs; Name: "{app}\bin\*"
-Type: filesandordirs; Name: "{app}\bin\node_modules\*"
 Type: filesandordirs; Name: "{app}\*"
+
+[Components]
+Name: "Proxy"; Description: "Main proxy files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
+Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full; MinVersion: 0,6.1
+
+[Code]
+procedure InitializeWizard;
+begin
+    idpDownloadAfter(wpReady);
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+begin
+    if CurPageID = wpReady then
+    begin
+        idpClearFiles;
+        if IsComponentSelected('NodeJS') then
+        begin
+            if IsWin64 then
+              idpAddFile('https://nodejs.org/dist/v9.11.1/node-v9.11.1-x64.msi', ExpandConstant('{tmp}\node.msi'));
+            if not IsWin64 then
+              idpAddFile('https://nodejs.org/dist/v9.11.1/node-v9.11.1-x86.msi', ExpandConstant('{tmp}\node.msi'));
+        end;
+  end;
+end;
