@@ -91,8 +91,6 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 [Run]
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\{#Nodex64Name}"" /qn /norestart /passive"; Flags: 64bit skipifdoesntexist waituntilterminated; Check:IsWin64; StatusMsg: "Install NodeJs"; 
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\{#Nodex86Name}"" /qn /norestart /passive"; Flags: 32bit skipifdoesntexist waituntilterminated; StatusMsg: "Install NodeJs"; 
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Node In"" program=""{pf64}\nodejs\node.exe"" dir=in action=allow enable=yes"; Flags: runhidden;
-Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""Node Out"" program=""{pf64}\nodejs\node.exe"" dir=out action=allow enable=yes"; Flags: runhidden;
 
 [INI]
 Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: " https://discord.gg/maqBmJV"
