@@ -69,9 +69,13 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
-Name: "openfolder"; Description: "Open TeraProxy folder after installation"; GroupDescription: "{cm:AdditionalIcons}"
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: unchecked
+Name: "NAtera"; Description: "NA"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "EUtera"; Description: "EU"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "TWtera"; Description: "TW"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "RUtera"; Description: "RU"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "KRTera"; Description: "KR"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "THTera"; Description: "TH"; GroupDescription: "Choose your region:"; Flags: exclusive
 
 [Files]
 Source: "topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
@@ -81,18 +85,23 @@ Source: "topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion; Co
 Source: "topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\bin\node_modules\*"; DestDir: "{app}\bin\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
-
+Source: "topack\Tasks\config-NA.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: NAtera
+Source: "topack\Tasks\config-EU.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: EUtera
+Source: "topack\Tasks\config-RU.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: RUtera
+Source: "topack\Tasks\config-KR.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: KRtera
+Source: "topack\Tasks\config-TW.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: TWtera
+Source: "topack\Tasks\config-TH.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: THtera
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
+
 
 [Run]
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; Components: NodeJS; StatusMsg: "Install NodeJs binary"; 
-Filename: "explorer.exe"; Parameters:"{app}";  Tasks: openfolder
+Filename:  "explorer.exe"; Parameters: "{app}"
 
 [INI]
 Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: " https://discord.gg/maqBmJV"
