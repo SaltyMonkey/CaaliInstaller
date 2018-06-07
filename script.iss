@@ -69,13 +69,13 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
+Name: "NAtera"; Description: "NA (EnMasse)"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "EUtera"; Description: "EU (GameForge)"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "KRTera"; Description: "KR (Nexon)"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "RUtera"; Description: "RU (Destiny)"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "THTera"; Description: "TH (Playwith)"; GroupDescription: "Choose your region:"; Flags: exclusive
+Name: "TWtera"; Description: "TW (Mangot5)"; GroupDescription: "Choose your region:"; Flags: exclusive
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: unchecked
-Name: "NAtera"; Description: "NA"; GroupDescription: "Choose your region:"; Flags: exclusive
-Name: "EUtera"; Description: "EU"; GroupDescription: "Choose your region:"; Flags: exclusive
-Name: "TWtera"; Description: "TW"; GroupDescription: "Choose your region:"; Flags: exclusive
-Name: "RUtera"; Description: "RU"; GroupDescription: "Choose your region:"; Flags: exclusive
-Name: "KRTera"; Description: "KR"; GroupDescription: "Choose your region:"; Flags: exclusive
-Name: "THTera"; Description: "TH"; GroupDescription: "Choose your region:"; Flags: exclusive
 
 [Files]
 Source: "topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
@@ -85,6 +85,7 @@ Source: "topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion; Co
 Source: "topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\bin\node_modules\*"; DestDir: "{app}\bin\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
+Source: "topack\bypass\xigncode-bypass\*"; DestDir: "{app}\bin\node_modules\xigncode-bypass"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Xigncode
 Source: "topack\Tasks\config-NA.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: NAtera
 Source: "topack\Tasks\config-EU.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: EUtera
 Source: "topack\Tasks\config-RU.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: RUtera
@@ -115,6 +116,7 @@ Type: filesandordirs; Name: "{app}\*"
 [Components]
 Name: "Proxy"; Description: "Main proxy files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full; MinVersion: 0,6.1
+Name: "Xigncode"; Description: "Install XignCode bypass module"; Types: full; MinVersion: 0,6.1
 
 [Code]
 procedure InitializeWizard;
@@ -130,9 +132,9 @@ begin
         if IsComponentSelected('NodeJS') then
         begin
             if IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v9.11.1/node-v9.11.1-x64.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v10.4.0/node-v10.4.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v9.11.1/node-v9.11.1-x86.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v10.4.0/node-v10.4.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
         end;
   end;
 end;
