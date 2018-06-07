@@ -102,6 +102,10 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 
 [Run]
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; Components: NodeJS; StatusMsg: "Install NodeJs binary"; 
+Filename: "{tmp}\vc17x86.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x86"; 
+Filename: "{tmp}\vc17x64.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x64"; 
+Filename: "{tmp}\vc15x86.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2015 Redistributable package x86"; 
+Filename: "{tmp}\vc15x64.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2015 Redistributable package x64"; 
 Filename:  "explorer.exe"; Parameters: "{app}"
 
 [INI]
@@ -117,6 +121,7 @@ Type: filesandordirs; Name: "{app}\*"
 Name: "Proxy"; Description: "Main proxy files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full; MinVersion: 0,6.1
 Name: "Xigncode"; Description: "Install XignCode bypass module"; Types: full; MinVersion: 0,6.1
+Name: "VCRedistributable"; Description: "Download and install VC++ packages"; Types: full; MinVersion: 0,6.1
 
 [Code]
 procedure InitializeWizard;
@@ -135,6 +140,17 @@ begin
               idpAddFile('https://nodejs.org/dist/v10.4.0/node-v10.4.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
               idpAddFile('https://nodejs.org/dist/v10.4.0/node-v10.4.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
+        end;
+        if IsComponentSelected('VCRedistributable') then
+        begin
+            if IsWin64 then
+              idpAddFile('https://aka.ms/vs/15/release/VC_redist.x86.exe', ExpandConstant('{tmp}\vc17x86.msi'));
+              idpAddFile('https://aka.ms/vs/15/release/VC_redist.x64.exe', ExpandConstant('{tmp}\vc17x64.msi'));
+              idpAddFile('https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x86.exe', ExpandConstant('{tmp}\vc15x86.msi'));
+              idpAddFile('https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe', ExpandConstant('{tmp}\vc15x64.msi'));
+            if not IsWin64 then
+              idpAddFile('https://aka.ms/vs/15/release/VC_redist.x86.exe', ExpandConstant('{tmp}\vc17x86.msi'));
+              idpAddFile('https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x86.exe', ExpandConstant('{tmp}\vc15x86.msi'));
         end;
   end;
 end;
