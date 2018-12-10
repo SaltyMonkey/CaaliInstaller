@@ -87,21 +87,19 @@ Source: "topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion; Com
 Source: "topack\proxy\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
 Source: "topack\proxy\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
 Source: "topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
-Source: "topack\proxy\Configurator.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
 Source: "topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
-Source: "topack\proxy\bin\node_modules\*"; DestDir: "{app}\bin\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
-Source: "topack\Tasks\config-NA.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: NAtera
-Source: "topack\Tasks\config-EU.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: EUtera
-Source: "topack\Tasks\config-RU.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: RUtera
-Source: "topack\Tasks\config-KR.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: KRtera
-Source: "topack\Tasks\config-TW.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: TWtera
-Source: "topack\Tasks\config-SE.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: THtera
-Source: "topack\Tasks\config-JP.json"; DestDir: "{app}\bin\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: JPtera
+Source: "topack\proxy\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
+Source: "topack\Tasks\config-NA.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: NAtera
+Source: "topack\Tasks\config-EU.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: EUtera
+Source: "topack\Tasks\config-RU.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: RUtera
+Source: "topack\Tasks\config-KR.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: KRtera
+Source: "topack\Tasks\config-TW.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: TWtera
+Source: "topack\Tasks\config-SE.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: THtera
+Source: "topack\Tasks\config-JP.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: JPtera
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\Configurator"; Filename: "{app}\Configurator.exe"
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
@@ -142,9 +140,9 @@ begin
         if IsComponentSelected('NodeJS') then
         begin
             if IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v10.11.0/node-v10.11.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/latest-v11.x/node-v10.11.4-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v10.11.0/node-v10.11.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/latest-v11.x/node-v10.11.4-x86.msi', ExpandConstant('{tmp}\node.msi'));
         end;
         if IsComponentSelected('VCRedistributable') then
         begin
