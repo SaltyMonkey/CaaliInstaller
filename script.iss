@@ -41,7 +41,8 @@ ShowTasksTreeLines=True
 UninstallDisplayIcon={uninstallexe}
 VersionInfoCopyright=SaltyMonkey
 VersionInfoProductName=TeraProxy
-InternalCompressLevel=ultra
+InternalCompressLevel=ultra64
+Compression=lzma2/ultra
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -77,7 +78,7 @@ Name: "EUtera"; Description: "EU (GameForge)"; GroupDescription: "Choose your re
 Name: "NAtera"; Description: "NA (Enmasse)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
 Name: "KRTera"; Description: "KR (Nexon)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
 Name: "RUtera"; Description: "RU (Destiny)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "THTera"; Description: "SE (Playwith)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
+Name: "THTera"; Description: "SEA/TH (Playwith)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
 Name: "TWtera"; Description: "TW (Mangot5)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
 Name: "JPtera"; Description: "JP (Pmang) IGNORE CERTIFICATE ERROR IN LAUNCHER!"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: checkedonce
@@ -90,6 +91,9 @@ Source: "topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion; Co
 Source: "topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
 Source: "topack\proxy\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
+Source: "topack\Tasks\electron\node_modules\electron\*"; DestDir: "{app}\node_modules\electron\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
+Source: "topack\Tasks\electron\TeraProxyGUI.bat"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
+Source: "topack\Tasks\electron\TeraProxyGUIWithConsole.bat"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
 Source: "topack\Tasks\config-NA.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: NAtera
 Source: "topack\Tasks\config-EU.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: EUtera
 Source: "topack\Tasks\config-RU.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: RUtera
@@ -100,9 +104,11 @@ Source: "topack\Tasks\config-JP.json"; DestDir: "{app}\"; DestName: "config.json
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\TeraProxyGUI.bat"; Components: ProxyGUI
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\TeraProxyGUI.bat"; Components: ProxyGUI; Tasks: desktopicon
 
 [Run]
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; Components: NodeJS; StatusMsg: "Install NodeJs binary"; 
@@ -113,7 +119,7 @@ Filename: "{tmp}\vc15x64.msi"; Parameters: "/q /norestart"; Flags: skipifdoesnte
 Filename:  "explorer.exe"; Parameters: "{app}"
 
 [INI]
-Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: " https://discord.gg/maqBmJV"
+Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://discord.gg/dUNDDtw"
 
 [UninstallDelete]
 Type: files; Name: "{app}\{#MyAppName}.url"
@@ -123,6 +129,7 @@ Type: filesandordirs; Name: "{app}\*"
 
 [Components]
 Name: "Proxy"; Description: "Main proxy files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
+Name: "ProxyGUI"; Description: "Install UI component"; Types: full custom; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full custom; MinVersion: 0,6.1
 Name: "VCRedistributable"; Description: "Download and install VC++ packages"; Types: full custom; MinVersion: 0,6.1
 
@@ -140,9 +147,9 @@ begin
         if IsComponentSelected('NodeJS') then
         begin
             if IsWin64 then
-              idpAddFile('https://nodejs.org/dist/latest-v11.x/node-v10.11.4-x64.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v11.4.0/node-v11.4.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
-              idpAddFile('https://nodejs.org/dist/latest-v11.x/node-v10.11.4-x86.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v11.4.0/node-v11.4.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
         end;
         if IsComponentSelected('VCRedistributable') then
         begin
