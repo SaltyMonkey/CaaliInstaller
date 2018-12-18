@@ -103,11 +103,11 @@ Source: "topack\Tasks\config-SE.json"; DestDir: "{app}\"; DestName: "config.json
 Source: "topack\Tasks\config-JP.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: JPtera
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: not ProxyGUI
 Name: "{group}\{#MyAppName}"; Filename: "{app}\TeraProxyGUI.bat"; Components: ProxyGUI
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: not ProxyGUI; Tasks: desktopicon
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\TeraProxyGUI.bat"; Components: ProxyGUI; Tasks: desktopicon
 
 [Run]
@@ -129,7 +129,7 @@ Type: filesandordirs; Name: "{app}\*"
 
 [Components]
 Name: "Proxy"; Description: "Main proxy files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
-Name: "ProxyGUI"; Description: "Install UI component"; Types: full custom; MinVersion: 0,6.1
+Name: "ProxyGUI"; Description: "User Interface for Proxy (highly recommended)"; Types: full custom; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full custom; MinVersion: 0,6.1
 Name: "VCRedistributable"; Description: "Download and install VC++ packages"; Types: full custom; MinVersion: 0,6.1
 
