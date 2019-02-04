@@ -74,13 +74,6 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
-Name: "EUtera"; Description: "EU (GameForge)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "NAtera"; Description: "NA (Enmasse)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "KRTera"; Description: "KR (Nexon)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "RUtera"; Description: "RU (Destiny)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "THTera"; Description: "SEA/TH (Playwith)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "TWtera"; Description: "TW (Mangot5)"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
-Name: "JPtera"; Description: "JP (Pmang) IGNORE CERTIFICATE ERROR IN LAUNCHER!"; GroupDescription: "Choose your region:"; Flags: exclusive unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: checkedonce
 
 [Files]
@@ -94,13 +87,6 @@ Source: "topack\proxy\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recu
 Source: "topack\Tasks\electron\node_modules\electron\*"; DestDir: "{app}\node_modules\electron\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
 Source: "topack\Tasks\electron\TeraProxyGUI.bat"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
 Source: "topack\Tasks\electron\TeraProxyGUIWithConsole.bat"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
-Source: "topack\Tasks\config-NA.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: NAtera
-Source: "topack\Tasks\config-EU.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: EUtera
-Source: "topack\Tasks\config-RU.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: RUtera
-Source: "topack\Tasks\config-KR.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: KRtera
-Source: "topack\Tasks\config-TW.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: TWtera
-Source: "topack\Tasks\config-SE.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: THtera
-Source: "topack\Tasks\config-JP.json"; DestDir: "{app}\"; DestName: "config.json"; Flags: ignoreversion confirmoverwrite; Components: Proxy; Tasks: JPtera
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: not ProxyGUI
@@ -147,9 +133,9 @@ begin
         if IsComponentSelected('NodeJS') then
         begin
             if IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v11.4.0/node-v11.4.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v11.9.0/node-v11.9.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v11.4.0/node-v11.4.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v11.9.0/node-v11.9.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
         end;
         if IsComponentSelected('VCRedistributable') then
         begin
