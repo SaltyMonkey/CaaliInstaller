@@ -1,8 +1,8 @@
-#define MyAppName "CaaliTeraProxy"
-#define MyAppVersion "1"
+#define MyAppName "CaaliTeraToolbox"
+#define MyAppVersion "2"
 #define MyAppPublisher "SaltyMonkey"
 #define MyAppURL "https://discord.gg/dUNDDtw"
-#define MyAppExeName "TeraProxy.bat"
+#define MyAppExeName "TeraToolbox.bat"
 #include <idp.iss>
 
 [Setup]
@@ -19,30 +19,34 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultGroupName={#MyAppName}
 DefaultDirName={userpf}\{#MyAppName}
-OutputDir=D:\CaaliProxyInstaller\output
+OutputDir=D:\CaaliToolboxInstaller\output
 OutputBaseFilename=setup
-SolidCompression=yes
+SolidCompression=True
 RestartIfNeededByRun=False
 UninstallLogMode=overwrite
-UninstallDisplayName=TeraProxy
+UninstallDisplayName=TeraToolbox
 VersionInfoVersion=1.0
 VersionInfoCompany=Caali's team
-VersionInfoDescription=TeraProxy (Caali edition)
+VersionInfoDescription=TeraToolbox (Caali edition)
 MinVersion=0,6.1
 AppCopyright=SaltyMonkey
-ShowLanguageDialog=no
-DisableStartupPrompt=False
 UsePreviousAppDir=False
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
-InfoBeforeFile=D:\CaaliProxyInstaller\topack\readme.txt
+InfoBeforeFile=D:\CaaliToolboxInstaller\topack\readme.txt
 UsePreviousLanguage=False
 ShowTasksTreeLines=True
 UninstallDisplayIcon={uninstallexe}
 VersionInfoCopyright=SaltyMonkey
-VersionInfoProductName=TeraProxy
+VersionInfoProductName=TeraToolbox
 InternalCompressLevel=ultra64
 Compression=lzma2/ultra
+Uninstallable=yes
+CreateUninstallRegKey=no
+UsePreviousSetupType=False
+UsePreviousTasks=False
+ShowLanguageDialog=no
+SetupIconFile=D:\CaaliToolboxInstaller\topack\icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -75,38 +79,35 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: checkedonce
+Name: "openfolder"; Description: "Open toolbox folder"; GroupDescription: "Common:"; Flags: checkedonce
 
 [Files]
-Source: "topack\proxy\config.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
-Source: "topack\proxy\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
-Source: "topack\proxy\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
-Source: "topack\proxy\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
-Source: "topack\proxy\TeraProxy.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Proxy
-Source: "topack\proxy\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
-Source: "topack\proxy\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
-Source: "topack\proxy\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Proxy
-Source: "topack\Tasks\electron\node_modules\electron\*"; DestDir: "{app}\node_modules\electron\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
-Source: "topack\Tasks\electron\TeraProxyGUI.bat"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
-Source: "topack\Tasks\electron\TeraProxyGUIWithConsole.bat"; DestDir: "{app}\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: ProxyGUI
+Source: "topack\toolbox\config.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\TeraToolboxCLI.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\TeraToolbox.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
+Source: "topack\toolbox\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
+Source: "topack\toolbox\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: not ProxyGUI
-Name: "{group}\{#MyAppName}"; Filename: "{app}\TeraProxyGUI.bat"; Components: ProxyGUI
+Name: "{group}\{#MyAppName}"; Filename: "{app}\TeraToolbox.bat"; Components: Toolbox
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: not ProxyGUI; Tasks: desktopicon
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\TeraProxyGUI.bat"; Components: ProxyGUI; Tasks: desktopicon
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: Toolbox; Tasks: desktopicon
 
 [Run]
-Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; Components: NodeJS; StatusMsg: "Install NodeJs binary"; 
-Filename: "{tmp}\vc17x86.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x86"; 
-Filename: "{tmp}\vc17x64.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x64"; 
-Filename: "{tmp}\vc15x86.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x86"; 
-Filename: "{tmp}\vc15x64.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; Components: VCRedistributable; StatusMsg: "Install VC++ 2017 Redistributable package x64"; 
-Filename: "explorer.exe"; Parameters: "{app}"
-Filename: "reg"; Parameters: "add ""HKLM\SOFTWARE\Microsoft\Microsoft Antimalware\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: Proxy
-Filename: "reg"; Parameters: "add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: Proxy
-Filename: "powershell.exe"; Parameters: "Add-MpPreference -ExclusionPath ""{app}"""; Components: Proxy
+Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; StatusMsg: "Install NodeJs binary"; Components: NodeJS
+Filename: "{tmp}\vc17x86.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x86"; Components: VCRedistributable
+Filename: "{tmp}\vc17x64.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x64"; Components: VCRedistributable
+Filename: "{tmp}\vc15x86.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x86"; Components: VCRedistributable
+Filename: "{tmp}\vc15x64.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x64"; Components: VCRedistributable
+Filename: "explorer.exe"; Parameters: "{app}"; Tasks: openfolder
+Filename: "reg"; Parameters: "add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
+Filename: "cmd.exe"; Parameters: "powershell -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath ""{app}"""; Components: DefenderExclude
+Filename: "reg"; Parameters: "add ""HKLM\SOFTWARE\Microsoft\Microsoft Antimalware\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
 
 [INI]
 Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; String: "https://discord.gg/dUNDDtw"
@@ -118,10 +119,10 @@ Type: filesandordirs; Name: "{app}\bin\*"
 Type: filesandordirs; Name: "{app}\*"
 
 [Components]
-Name: "Proxy"; Description: "Main proxy files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
-Name: "ProxyGUI"; Description: "User Interface for Proxy (highly recommended)"; Types: full custom; MinVersion: 0,6.1
+Name: "Toolbox"; Description: "Main toolbox files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full custom; MinVersion: 0,6.1
 Name: "VCRedistributable"; Description: "Download and install VC++ packages"; Types: full custom; MinVersion: 0,6.1
+Name: "DefenderExclude"; Description: "Try to exclude toolbox from WinDefender"; Types: full custom compact; MinVersion: 0,6.1
 
 [Code]
 procedure InitializeWizard;
@@ -137,9 +138,9 @@ begin
         if IsComponentSelected('NodeJS') then
         begin
             if IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v11.9.0/node-v11.9.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v12.2.0/node-v12.2.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v11.9.0/node-v11.9.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
+              idpAddFile('https://nodejs.org/dist/v12.2.0/node-v12.2.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
         end;
         if IsComponentSelected('VCRedistributable') then
         begin
