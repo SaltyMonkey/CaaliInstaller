@@ -24,10 +24,10 @@ OutputBaseFilename=setup
 SolidCompression=True
 RestartIfNeededByRun=False
 UninstallLogMode=overwrite
-UninstallDisplayName=TeraToolbox
+UninstallDisplayName=TERA Toolbox
 VersionInfoVersion=1.0
-VersionInfoCompany=TeraToolbox
-VersionInfoDescription=TeraToolbox
+VersionInfoCompany=Caali
+VersionInfoDescription=TERA Toolbox
 MinVersion=0,6.1
 AppCopyright=SaltyMonkey
 UsePreviousAppDir=False
@@ -37,7 +37,8 @@ InfoBeforeFile=D:\CaaliToolboxInstaller\topack\readme.txt
 UsePreviousLanguage=False
 ShowTasksTreeLines=True
 UninstallDisplayIcon={uninstallexe}
-VersionInfoProductName=TeraToolbox
+VersionInfoCopyright=SaltyMonkey
+VersionInfoProductName=TERA Toolbox
 InternalCompressLevel=ultra64
 Compression=lzma2/ultra
 Uninstallable=yes
@@ -78,7 +79,7 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "Common:"; Flags: checkedonce
-Name: "openfolder"; Description: "Open toolbox folder"; GroupDescription: "Common:"; Flags: checkedonce
+Name: "openfolder"; Description: "Open install folder in explorer"; GroupDescription: "Common:"; Flags: checkedonce
 
 [Files]
 Source: "topack\toolbox\config.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
@@ -99,7 +100,7 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: Toolbox; Tasks: desktopicon
 
 [Run]
-Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; StatusMsg: "Install NodeJs binary"; Components: NodeJS
+Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; StatusMsg: "Install Node.JS"; Components: NodeJS
 Filename: "{tmp}\vc17x86.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x86"; Components: VCRedistributable
 Filename: "{tmp}\vc17x64.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x64"; Components: VCRedistributable
 Filename: "{tmp}\vc15x86.msi"; Parameters: "/q /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x86"; Components: VCRedistributable
@@ -120,10 +121,10 @@ Type: filesandordirs; Name: "{app}\doc\*"
 Type: filesandordirs; Name: "{app}\*"
 
 [Components]
-Name: "Toolbox"; Description: "Main toolbox files"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
-Name: "NodeJS"; Description: "Download and install NodeJS"; Types: full custom; MinVersion: 0,6.1
-Name: "VCRedistributable"; Description: "Download and install VC++ packages"; Types: full custom; MinVersion: 0,6.1
-Name: "DefenderExclude"; Description: "Try to exclude toolbox from WinDefender"; Types: full custom compact; MinVersion: 0,6.1
+Name: "Toolbox"; Description: "TERA Toolbox"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
+Name: "NodeJS"; Description: "Download and install Node.JS"; Types: full custom; MinVersion: 0,6.1
+Name: "VCRedistributable"; Description: "Download and install VC++ runtime"; Types: full custom; MinVersion: 0,6.1
+Name: "DefenderExclude"; Description: "Add Windows Defender exclusion"; Types: full custom compact; MinVersion: 0,6.1
 
 [Code]
 procedure InitializeWizard;
