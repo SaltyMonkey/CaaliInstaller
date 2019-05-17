@@ -26,8 +26,8 @@ RestartIfNeededByRun=False
 UninstallLogMode=overwrite
 UninstallDisplayName=TeraToolbox
 VersionInfoVersion=1.0
-VersionInfoCompany=Caali's team
-VersionInfoDescription=TeraToolbox (Caali edition)
+VersionInfoCompany=TeraToolbox
+VersionInfoDescription=TeraToolbox
 MinVersion=0,6.1
 AppCopyright=SaltyMonkey
 UsePreviousAppDir=False
@@ -37,7 +37,6 @@ InfoBeforeFile=D:\CaaliToolboxInstaller\topack\readme.txt
 UsePreviousLanguage=False
 ShowTasksTreeLines=True
 UninstallDisplayIcon={uninstallexe}
-VersionInfoCopyright=SaltyMonkey
 VersionInfoProductName=TeraToolbox
 InternalCompressLevel=ultra64
 Compression=lzma2/ultra
@@ -88,6 +87,7 @@ Source: "topack\toolbox\package-lock.json"; DestDir: "{app}"; Flags: ignoreversi
 Source: "topack\toolbox\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\TeraToolboxCLI.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\TeraToolbox.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\doc\*"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
 Source: "topack\toolbox\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
 Source: "topack\toolbox\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
@@ -116,6 +116,7 @@ Filename: "{app}\{#MyAppName}.url"; Section: "InternetShortcut"; Key: "URL"; Str
 Type: files; Name: "{app}\{#MyAppName}.url"
 Type: filesandordirs; Name: "{app}\node_modules\*"
 Type: filesandordirs; Name: "{app}\bin\*"
+Type: filesandordirs; Name: "{app}\doc\*"
 Type: filesandordirs; Name: "{app}\*"
 
 [Components]
@@ -145,13 +146,17 @@ begin
         if IsComponentSelected('VCRedistributable') then
         begin
             if IsWin64 then
+            begin
               idpAddFile('https://aka.ms/vs/15/release/VC_redist.x86.exe', ExpandConstant('{tmp}\vc17x86.msi'));
               idpAddFile('https://aka.ms/vs/15/release/VC_redist.x64.exe', ExpandConstant('{tmp}\vc17x64.msi'));
               idpAddFile('https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x86.exe', ExpandConstant('{tmp}\vc15x86.msi'));
               idpAddFile('https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x64.exe', ExpandConstant('{tmp}\vc15x64.msi'));
+            end;
             if not IsWin64 then
+            begin
               idpAddFile('https://aka.ms/vs/15/release/VC_redist.x86.exe', ExpandConstant('{tmp}\vc17x86.msi'));
               idpAddFile('https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963AEAD48/vc_redist.x86.exe', ExpandConstant('{tmp}\vc15x86.msi'));
+            end;
         end;
   end;
 end;
