@@ -2,7 +2,7 @@
 #define MyAppVersion "2"
 #define MyAppPublisher "SaltyMonkey"
 #define MyAppURL "https://discord.gg/dUNDDtw"
-#define MyAppExeName "TeraToolbox.bat"
+#define MyAppExeName "TeraToolbox.exe"
 #include <idp.iss>
 
 [Setup]
@@ -86,23 +86,21 @@ Source: "topack\toolbox\config.json"; DestDir: "{app}"; Flags: ignoreversion; Co
 Source: "topack\toolbox\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\package-lock.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
-Source: "topack\toolbox\TeraToolboxCLI.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
-Source: "topack\toolbox\TeraToolbox.bat"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\TeraToolboxCLI.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
+Source: "topack\toolbox\TeraToolbox.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\doc\*"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\bin\*"; DestDir: "{app}\bin\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
 Source: "topack\toolbox\node_modules\*"; DestDir: "{app}\node_modules\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
 Source: "topack\toolbox\mods\*"; DestDir: "{app}\mods\"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: Toolbox
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\TeraToolbox.bat"; Components: Toolbox
+Name: "{group}\{#MyAppName}"; Filename: "{app}\TeraToolbox.exe"; Components: Toolbox
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: Toolbox; Tasks: desktopicon
 
 [Run]
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; StatusMsg: "Install Node.JS"; Components: NodeJS
-Filename: "{tmp}\vc17x86.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x86"; Components: VCRedistributable
-Filename: "{tmp}\vc17x64.msi"; Parameters: "/install /passive /norestart"; Flags: skipifdoesntexist; StatusMsg: "Install VC++ 2017 Redistributable package x64"; Components: VCRedistributable
 Filename: "explorer.exe"; Parameters: "{app}"; Tasks: openfolder
 Filename: "reg"; Parameters: "add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
 Filename: "powershell.exe"; Parameters: "-inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath ""{app}"""; Components: DefenderExclude
@@ -121,7 +119,6 @@ Type: filesandordirs; Name: "{app}\*"
 [Components]
 Name: "Toolbox"; Description: "TERA Toolbox"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install Node.JS"; Types: full custom; MinVersion: 0,6.1
-Name: "VCRedistributable"; Description: "Download and install VC++ runtime"; Types: full custom; MinVersion: 0,6.1
 Name: "DefenderExclude"; Description: "Add Windows Defender exclusion"; Types: full custom compact; MinVersion: 0,6.1
 
 [Code]
@@ -141,18 +138,6 @@ begin
               idpAddFile('https://nodejs.org/dist/v12.2.0/node-v12.2.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
             if not IsWin64 then
               idpAddFile('https://nodejs.org/dist/v12.2.0/node-v12.2.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
-        end;
-        if IsComponentSelected('VCRedistributable') then
-        begin
-            if IsWin64 then
-            begin
-              idpAddFile('https://aka.ms/vs/15/release/VC_redist.x86.exe', ExpandConstant('{tmp}\vc17x86.msi'));
-              idpAddFile('https://aka.ms/vs/15/release/VC_redist.x64.exe', ExpandConstant('{tmp}\vc17x64.msi'));
-            end;
-            if not IsWin64 then
-            begin
-              idpAddFile('https://aka.ms/vs/15/release/VC_redist.x86.exe', ExpandConstant('{tmp}\vc17x86.msi'));
-            end;
         end;
   end;
 end;
