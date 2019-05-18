@@ -103,7 +103,7 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Compone
 Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; StatusMsg: "Install Node.JS"; Components: NodeJS
 Filename: "explorer.exe"; Parameters: "{app}"; Tasks: openfolder
 Filename: "reg"; Parameters: "add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
-Filename: "powershell.exe"; Parameters: "-inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath ""{app}"""; Components: DefenderExclude
+Filename: "powershell.exe"; Parameters: "-windowstyle hidden -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath ""{app}"""; Components: DefenderExclude
 Filename: "reg"; Parameters: "add ""HKLM\SOFTWARE\Microsoft\Microsoft Antimalware\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
 
 [INI]
