@@ -300,7 +300,10 @@ begin
         idpClearFiles;
         if IsComponentSelected('Electron') then
         begin
-            idpAddFile('https://github.com/electron/electron/releases/download/v5.0.1/electron-v5.0.1-win32-x64.zip', ExpandConstant('{tmp}\electron.zip'));
+           if isWin64 then
+             idpAddFile('https://github.com/electron/electron/releases/download/v5.0.1/electron-v5.0.1-win32-x64.zip', ExpandConstant('{tmp}\electron.zip'));
+           if not IsWin64 then 
+             idpAddFile('https://github.com/electron/electron/releases/download/v5.0.1/electron-v5.0.1-win32-ia32.zip', ExpandConstant('{tmp}\electron.zip'));
         end;
         if IsComponentSelected('NodeJS') then
         begin
