@@ -46,6 +46,9 @@ DisableWelcomePage=True
 DisableFinishedPage=True
 
 ShowComponentSizes =False
+FlatComponentsList=False
+
+
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
@@ -120,8 +123,12 @@ Type: filesandordirs; Name: "{app}\*"
 [Components]
 Name: "Toolbox"; Description: "TERA Toolbox"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
 Name: "NodeJS"; Description: "Download and install Node.JS"; Types: full custom; MinVersion: 0,6.1
-Name: "Electron"; Description: "Download and install Electron for Toolbox GUI"; Types: full custom; MinVersion: 0,6.1
+Name: "Electron"; Description: "Download and install UI files"; Types: full custom; MinVersion: 0,6.1
+Name: "LangSelect"; Description: "Set Toolbox translation automatically"; Types: full custom; MinVersion: 0,6.1
 Name: "DefenderExclude"; Description: "Add Windows Defender exclusion"; Types: full custom compact; MinVersion: 0,6.1
+
+[ThirdParty]
+UseRelativePaths=True
 
 [Code]
 { from https://stackoverflow.com/questions/11778292/how-to-change-wizard-size-width-and-height-in-an-inno-setup-installer }
@@ -266,35 +273,35 @@ begin
     WizardBitmapImage2.Height := MainPanel.Height;
     
     idpDownloadAfter(wpReady);
-
+    idpSetOption('detailsbutton', 'false');
+    idpSetOption('detailedmode', 'true');
+    idpSetOption('retrybutton', 'true');
     { Download form } 
-    MoveDown(IDPForm.TotalProgressBar, deltaY);
-    MoveDown(IDPForm.FileProgressBar, deltaY);
-    MoveDown(IDPForm.CurrentFileLabel, deltaY);
-    MoveDown(IDPForm.TotalProgressLabel, deltaY);
-    MoveDown(IDPForm.TotalDownloaded, deltaY);
-    MoveDown(IDPForm.FileDownloaded, deltaY);
-    MoveDown(IDPForm.FileNameLabel, deltaY);
-    MoveDown(IDPForm.SpeedLabel, deltaY);
-    MoveDown(IDPForm.StatusLabel, deltaY);
-    MoveDown(IDPForm.ElapsedTimeLabel, deltaY);
-    MoveDown(IDPForm.RemainingTimeLabel, deltaY);
-    MoveDown(IDPForm.FileName, deltaY);
-    MoveDown(IDPForm.Speed, deltaY);
-    MoveDown(IDPForm.Status, deltaY);
-    MoveDown(IDPForm.ElapsedTime, deltaY);
-    MoveDown(IDPForm.RemainingTime, deltaY);
-    MoveDown(IDPForm.DetailsButton, deltaY);
-    MoveDown(IDPForm.InvisibleButton, deltaY);
-    end;
+    GrowRightAndMoveDown(IDPForm.TotalProgressBar, DeltaX, deltaY);
+    GrowRightAndMoveDown(IDPForm.FileProgressBar, DeltaX, deltaY);
+    MoveDown(IDPForm.CurrentFileLabel, DeltaY);
+    MoveDown(IDPForm.TotalProgressLabel, DeltaY);
+    GrowRightAndMoveDown(IDPForm.TotalDownloaded, DeltaX, DeltaY);
+    GrowRightAndMoveDown(IDPForm.FileDownloaded, DeltaX, DeltaY);
+    MoveDown(IDPForm.FileNameLabel, DeltaY);
+    MoveDown(IDPForm.SpeedLabel, DeltaY);
+    MoveDown(IDPForm.StatusLabel, DeltaY);
+    MoveDown(IDPForm.ElapsedTimeLabel, DeltaY);
+    MoveDown(IDPForm.RemainingTimeLabel, DeltaY);
+    MoveDown(IDPForm.FileName, DeltaY);
+    MoveDown(IDPForm.Speed, DeltaY);
+    MoveDown(IDPForm.Status, DeltaY);
+    MoveDown(IDPForm.ElapsedTime, DeltaY);
+    MoveDown(IDPForm.RemainingTime, DeltaY);
+    MoveDown(IDPForm.InvisibleButton, DeltaY);
+
+   end;
 end;
 
 procedure CurPageChanged(CurPageID: Integer);
 begin
-     if CurPageID = wpSelectTasks then
-
-    WizardForm.NextButton.Caption := SetupMessage(msgButtonInstall);
-
+    if CurPageID = wpSelectTasks then
+       WizardForm.NextButton.Caption := SetupMessage(msgButtonInstall);
     if CurPageID = wpReady then
     begin
         idpClearFiles;
