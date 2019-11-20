@@ -264,28 +264,6 @@ begin
     WizardBitmapImage2.Width := MainPanel.Width;
     WizardBitmapImage2.Height := MainPanel.Height;
     
-    idpDownloadAfter(wpReady);
-    idpSetOption('detailsbutton', 'false');
-    idpSetOption('detailedmode', 'true');
-    idpSetOption('retrybutton', 'true');
-    { Download form } 
-    GrowRightAndMoveDown(IDPForm.TotalProgressBar, DeltaX, deltaY);
-    GrowRightAndMoveDown(IDPForm.FileProgressBar, DeltaX, deltaY);
-    MoveDown(IDPForm.CurrentFileLabel, DeltaY);
-    MoveDown(IDPForm.TotalProgressLabel, DeltaY);
-    GrowRightAndMoveDown(IDPForm.TotalDownloaded, DeltaX, DeltaY);
-    GrowRightAndMoveDown(IDPForm.FileDownloaded, DeltaX, DeltaY);
-    MoveDown(IDPForm.FileNameLabel, DeltaY);
-    MoveDown(IDPForm.SpeedLabel, DeltaY);
-    MoveDown(IDPForm.StatusLabel, DeltaY);
-    MoveDown(IDPForm.ElapsedTimeLabel, DeltaY);
-    MoveDown(IDPForm.RemainingTimeLabel, DeltaY);
-    MoveDown(IDPForm.FileName, DeltaY);
-    MoveDown(IDPForm.Speed, DeltaY);
-    MoveDown(IDPForm.Status, DeltaY);
-    MoveDown(IDPForm.ElapsedTime, DeltaY);
-    MoveDown(IDPForm.RemainingTime, DeltaY);
-    MoveDown(IDPForm.InvisibleButton, DeltaY);
-
+  
    end;
 end;
