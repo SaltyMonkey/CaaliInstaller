@@ -3,7 +3,6 @@
 #define MyAppPublisher "SaltyMonkey"
 #define MyAppURL "https://discord.gg/dUNDDtw"
 #define MyAppExeName "TeraToolbox.exe"
-#include <idp.iss>
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -28,8 +27,6 @@ VersionInfoDescription=TERA Toolbox
 MinVersion=0,6.1
 AppCopyright=SaltyMonkey
 UsePreviousAppDir=False
-AlwaysShowGroupOnReadyPage=True
-AlwaysShowDirOnReadyPage=True
 InfoBeforeFile=D:\CaaliToolboxInstaller\topack\readme.txt
 UsePreviousLanguage=False
 ShowTasksTreeLines=False
@@ -47,7 +44,9 @@ DisableFinishedPage=True
 
 ShowComponentSizes =False
 FlatComponentsList=False
-
+DisableProgramGroupPage=yes
+DisableReadyPage=True
+DisableReadyMemo=True
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -65,7 +64,6 @@ Name: "hebrew"; MessagesFile: "compiler:Languages\Hebrew.isl"
 Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
-Name: "nepali"; MessagesFile: "compiler:Languages\Nepali.islu"
 Name: "norwegian"; MessagesFile: "compiler:Languages\Norwegian.isl"
 Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
 Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
@@ -84,7 +82,6 @@ Name: "openfolder"; Description: "Open install folder in explorer"; GroupDescrip
 Name: "startAfterInstall"; Description: "Run Toolbox after installation"; GroupDescription: "Common:"; Flags: checkedonce
 
 [Files]
-Source: "topack\7z\7za.exe"; DestDir: "{tmp}"; Flags: ignoreversion deleteafterinstall; Components: Electron
 Source: "topack\toolbox\config.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\package.json"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
 Source: "topack\toolbox\README.md"; DestDir: "{app}"; Flags: ignoreversion; Components: Toolbox
@@ -102,12 +99,10 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: Toolbox; Tasks: desktopicon
 
 [Run]
-Filename: "{sys}\msiexec.exe"; Parameters: "/package  ""{tmp}\node.msi"" /qn /norestart /passive"; Flags: skipifdoesntexist; StatusMsg: "Installing Node.JS"; Components: NodeJS
 Filename: "explorer.exe"; Parameters: "{app}"; Tasks: openfolder
 Filename: "reg"; Parameters: "add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
 Filename: "powershell.exe"; Parameters: "-windowstyle hidden -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath ""{app}"""; Components: DefenderExclude
 Filename: "reg"; Parameters: "add ""HKLM\SOFTWARE\Microsoft\Microsoft Antimalware\Exclusions\Paths"" /v ""{app}"" /t REG_DWORD /d 0 /f"; Components: DefenderExclude
-Filename: {tmp}\7za.exe; Parameters: "x ""{tmp}\electron.zip"" -o""{app}\node_modules\electron\dist"" * -r -aoa"; StatusMsg: "Configuring GUI libs"; Flags: runhidden runascurrentuser; Components: Electron
 Filename: {app}\{#MyAppExeName}; Flags: shellexec skipifsilent nowait; Tasks: startAfterInstall
 
 [INI]
@@ -122,9 +117,6 @@ Type: filesandordirs; Name: "{app}\*"
 
 [Components]
 Name: "Toolbox"; Description: "TERA Toolbox"; Types: full compact custom; Flags: fixed; MinVersion: 0,6.1
-Name: "NodeJS"; Description: "Download and install Node.JS"; Types: full custom; MinVersion: 0,6.1
-Name: "Electron"; Description: "Download and install UI files"; Types: full custom; MinVersion: 0,6.1
-Name: "LangSelect"; Description: "Set Toolbox translation automatically"; Types: full custom; MinVersion: 0,6.1
 Name: "DefenderExclude"; Description: "Add Windows Defender exclusion"; Types: full custom compact; MinVersion: 0,6.1
 
 [ThirdParty]
@@ -296,28 +288,4 @@ begin
     MoveDown(IDPForm.InvisibleButton, DeltaY);
 
    end;
-end;
-
-procedure CurPageChanged(CurPageID: Integer);
-begin
-    if CurPageID = wpSelectTasks then
-       WizardForm.NextButton.Caption := SetupMessage(msgButtonInstall);
-    if CurPageID = wpReady then
-    begin
-        idpClearFiles;
-        if IsComponentSelected('Electron') then
-        begin
-           if isWin64 then
-             idpAddFile('https://github.com/electron/electron/releases/download/v5.0.1/electron-v5.0.1-win32-x64.zip', ExpandConstant('{tmp}\electron.zip'));
-           if not IsWin64 then 
-             idpAddFile('https://github.com/electron/electron/releases/download/v5.0.1/electron-v5.0.1-win32-ia32.zip', ExpandConstant('{tmp}\electron.zip'));
-        end;
-        if IsComponentSelected('NodeJS') then
-        begin
-            if IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v12.4.0/node-v12.4.0-x64.msi', ExpandConstant('{tmp}\node.msi'));
-            if not IsWin64 then
-              idpAddFile('https://nodejs.org/dist/v12.4.0/node-v12.4.0-x86.msi', ExpandConstant('{tmp}\node.msi'));
-        end;
-  end;
 end;
